@@ -1,0 +1,55 @@
+When building a pipeline, we need a way to identify the inputs to our computations.
+The input to a pipeline computation is specified using DataSets and BoundColumns.
+
+DATASETS AND BOUNDCOLUMNS
+DataSets are simply collections of objects that tell the Pipeline API where and how to find the inputs to computations.
+An example of a DataSet that we have already seen is USEquityPricing.
+
+A BoundColumn is a column of data that is concretely bound to a DataSet. 
+Instances of BoundColumns are dynamically created upon access to attributes of DataSets.
+Inputs to pipeline computations must be of type BoundColumn.
+An example of a BoundColumn that we have already seen is USEquityPricing.close.
+
+It is important to understand that DataSets and BoundColumns do not hold actual data.
+Remember that when computations are created and added to a pipeline, they don't actually perform the computation until the pipeline is run.
+DataSet and BoundColumns can be thought of in a similar way; they are simply used to identify the inputs of a computation.
+The data is populated later when the pipeline is run.
+
+DTYPES
+When defining pipeline computations, we need to know the types of our inputs in order to know which operations and functions we can use.
+The dtype of a BoundColumn tells a computation what the type of the data will be when the pipeline is run.
+For example, USEquityPricing has a float dtype so a factor may perform arithmetic operations on USEquityPricing.close (e.g. compute the 5-day mean).
+The importance of this will become more clear in the next lesson. The dtype of a BoundColumn can also determine the type of a computation.
+In the case of the latest computation, the dtype determines whether the computation is a factor (float), a filter (bool), or a classifier (string, int).
+
+PRICING DATA
+US equity pricing data is stored in the USEquityPricing dataset.
+USEquityPricing provides five columns:
+
+    - USEquityPricing.open
+    - USEquityPricing.high
+    - USEquityPricing.low
+    - USEquityPricing.close
+    - USEquityPricing.volume
+
+Each of these columns has a float dtype.
+
+FUNDAMENTAL DATA
+Quantopian provides a number of fundamental data fields sourced from Morningstar.
+Each field exists as a BoundColumn under the Fundamentals dataset, and there are over 900 columns available.
+See the Quantopian Fundamentals Reference for a full description of each of these columns.
+
+The dtypes of the columns vary.
+For example, Fundamentals.market_cap is a column representing the most recently reported market cap for each asset on each date, and has a float dtype.
+
+PARTNER DATA
+Many datasets besides USEquityPricing and Morningstar fundamentals are available on Quantopian.
+These include consensus estimates data, news sentiment, and more. Most datasets are namespaced by provider under quantopian.pipeline.data.
+
+    - quantopian.pipeline.data.psychsignal (PsychSignal)
+    - quantopian.pipeline.data.sentdex (Sentdex)
+
+Similar to USEquityPricing, the two datasets listed above have columns (BoundColumns) that can be used in pipeline computations.
+The columns, along with example algorithms and notebooks can be found on the Data Reference. The dtypes of the columns vary.
+
+BoundColumns are most commonly used in CustomFactors which we will explore in the next lesson.
